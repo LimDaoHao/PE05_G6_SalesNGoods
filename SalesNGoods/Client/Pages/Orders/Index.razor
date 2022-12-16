@@ -1,0 +1,51 @@
+﻿@page "/orders/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Order List</h3>
+<br />
+
+@if (Orders == null)
+{
+    <div class="alert alert-info">Loading Orders...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+            <th>Order No.</th>
+            <th>Order Date</th>
+            <th>View Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Orders)
+            {
+                <tr>
+                <th>@order.Id</th>
+                <th>@order.OrderDate</th>
+                <th>
+                    <a href="/orders/view/@order.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@code {
+    private List<Order> Orders;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
+    }
+}
