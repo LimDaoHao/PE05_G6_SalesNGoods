@@ -13,11 +13,42 @@ namespace SalesNGoods.Server.Configurations.Entities
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasData(
+
                 new Category
                 {
                     Id = 1,
-                    Name = "Headphones",
-                    Type = "Electronics",
+                    Name = "Electronics",
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
+                },
+
+                new Category
+                {
+                    Id = 2,
+                    Name = "Beauty",
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
+
+                },
+
+                new Category
+                {
+                    Id = 3,
+                    Name = "Fashion",
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
+                },
+
+                new Category
+                {
+                    Id = 4,
+                    Name = "Health & Nutrition",
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",

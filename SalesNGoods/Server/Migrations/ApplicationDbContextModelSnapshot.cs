@@ -362,10 +362,36 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 20, 13, 17, 3, 705, DateTimeKind.Local).AddTicks(5264),
-                            DateUpdated = new DateTime(2023, 1, 20, 13, 17, 3, 706, DateTimeKind.Local).AddTicks(9874),
-                            Name = "Headphones",
-                            Type = "Electronics",
+                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 464, DateTimeKind.Local).AddTicks(2412),
+                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(867),
+                            Name = "Electronics",
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1402),
+                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1406),
+                            Name = "Beauty",
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1407),
+                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1408),
+                            Name = "Fashion",
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1410),
+                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1411),
+                            Name = "Health & Nutrition",
                             UpdatedBy = "System"
                         });
                 });
@@ -460,7 +486,7 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<int>("OrderQty")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -667,7 +693,9 @@ namespace SalesNGoods.Server.Migrations
 
                     b.HasOne("SalesNGoods.Shared.Domain.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 

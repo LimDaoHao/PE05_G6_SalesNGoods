@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SalesNGoods.Server.Migrations
 {
-    public partial class newdb : Migration
+    public partial class AddedDefaultDataAndUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -343,7 +343,7 @@ namespace SalesNGoods.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -363,13 +363,19 @@ namespace SalesNGoods.Server.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "Name", "Type", "UpdatedBy" },
-                values: new object[] { 1, "System", new DateTime(2023, 1, 20, 13, 17, 3, 705, DateTimeKind.Local).AddTicks(5264), new DateTime(2023, 1, 20, 13, 17, 3, 706, DateTimeKind.Local).AddTicks(9874), "Headphones", "Electronics", "System" });
+                values: new object[,]
+                {
+                    { 1, "System", new DateTime(2023, 1, 20, 14, 13, 40, 464, DateTimeKind.Local).AddTicks(2412), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(867), "Electronics", null, "System" },
+                    { 2, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1402), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1406), "Beauty", null, "System" },
+                    { 3, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1407), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1408), "Fashion", null, "System" },
+                    { 4, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1410), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1411), "Health & Nutrition", null, "System" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
