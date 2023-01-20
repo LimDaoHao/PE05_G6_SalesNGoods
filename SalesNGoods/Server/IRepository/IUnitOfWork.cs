@@ -15,5 +15,7 @@ namespace SalesNGoods.Server.IRepository
         IGenericRepository<OrderItem> OrderItems { get; }
         IGenericRepository<Category> Categories { get; }
         IGenericRepository<Customer> Customers { get; }
+        IGenericRepository<Staff> Staffs { get; }
+        IGenericRepository<Payment> Payments { get; }
     }
 }

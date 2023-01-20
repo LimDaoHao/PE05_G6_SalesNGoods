@@ -362,8 +362,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 12, 16, 18, 48, 59, 49, DateTimeKind.Local).AddTicks(684),
-                            DateUpdated = new DateTime(2022, 12, 16, 18, 48, 59, 49, DateTimeKind.Local).AddTicks(8239),
+                            DateCreated = new DateTime(2023, 1, 20, 13, 17, 3, 705, DateTimeKind.Local).AddTicks(5264),
+                            DateUpdated = new DateTime(2023, 1, 20, 13, 17, 3, 706, DateTimeKind.Local).AddTicks(9874),
                             Name = "Headphones",
                             Type = "Electronics",
                             UpdatedBy = "System"
@@ -475,6 +475,41 @@ namespace SalesNGoods.Server.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("SalesNGoods.Shared.Domain.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Method")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("SalesNGoods.Shared.Domain.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -522,6 +557,42 @@ namespace SalesNGoods.Server.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("SalesNGoods.Shared.Domain.Staff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Contact")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Staffs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -601,6 +672,17 @@ namespace SalesNGoods.Server.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SalesNGoods.Shared.Domain.Payment", b =>
+                {
+                    b.HasOne("SalesNGoods.Shared.Domain.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("SalesNGoods.Shared.Domain.Product", b =>

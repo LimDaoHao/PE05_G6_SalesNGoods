@@ -21,6 +21,8 @@ namespace SalesNGoods.Server.Repository
         private IGenericRepository<Order> _orders;
         private IGenericRepository<OrderItem> _orderitems;
         private IGenericRepository<Customer> _customers;
+        private IGenericRepository<Staff> _staffs;
+        private IGenericRepository<Payment> _payments;
 
         private UserManager<ApplicationUser> _userManager;
 
@@ -40,6 +42,10 @@ namespace SalesNGoods.Server.Repository
             => _orderitems ??= new GenericRepository<OrderItem>(_context);
         public IGenericRepository<Customer> Customers
             => _customers ??= new GenericRepository<Customer>(_context);
+        public IGenericRepository<Staff> Staffs
+    => _staffs ??= new GenericRepository<Staff>(_context);
+        public IGenericRepository<Payment> Payments
+    => _payments ??= new GenericRepository<Payment>(_context);
 
         public void Dispose()
         {
