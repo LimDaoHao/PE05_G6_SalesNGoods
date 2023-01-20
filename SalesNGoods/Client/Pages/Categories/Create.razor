@@ -1,3 +1,28 @@
 ﻿@page "/categories/create/"
 @inject HttpClient _client
-@inject NavigationManager _nav
+@inject NavigationManager _navManager
+<h3 class="card-title">Create New Category</h3>
+<hr />
+<br />
+<EditForm Model="@category" OnValidSubmit="CreateCategory">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Name:</label>
+        <div>
+            <InputText @bind-Value="@category.Name" class="form-control" />
+            <ValidationMessage For="@(() => category.Name)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        Create Category
+    </button>
+</EditForm>
+
+
+@code { Category category = new Category();
+            private async Task CreateCategory()
+            {
+                await _client.PostAsJsonAsync(Endpoints.CategoriesEndpoint, category);
+                _navManager.NavigateTo("/categories/");
+            } }
