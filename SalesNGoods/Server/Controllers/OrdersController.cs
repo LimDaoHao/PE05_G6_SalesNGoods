@@ -34,6 +34,7 @@ namespace SalesNGoods.Server.Controllers
         // public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         public async Task<IActionResult> GetOrders()
         {
+            
             //Refactored
             //return await _context.Orders.ToListAsync();
             var orders = await _unitOfWork.Orders.GetAll();
