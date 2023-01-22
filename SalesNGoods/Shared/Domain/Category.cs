@@ -9,6 +9,5 @@ namespace SalesNGoods.Shared.Domain
     public class Category : BaseDomainModel
     {
         public string Name { get; set; }
-        public string Type { get; set; }
     }
 }

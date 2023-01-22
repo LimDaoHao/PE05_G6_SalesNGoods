@@ -10,8 +10,8 @@ using SalesNGoods.Server.Data;
 namespace SalesNGoods.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230120061340_AddedDefaultDataAndUser")]
-    partial class AddedDefaultDataAndUser
+    [Migration("20230122021336_newdb")]
+    partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -349,9 +349,6 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -364,8 +361,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 464, DateTimeKind.Local).AddTicks(2412),
-                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(867),
+                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 335, DateTimeKind.Local).AddTicks(7535),
+                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(5357),
                             Name = "Electronics",
                             UpdatedBy = "System"
                         },
@@ -373,8 +370,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1402),
-                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1406),
+                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6385),
+                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6389),
                             Name = "Beauty",
                             UpdatedBy = "System"
                         },
@@ -382,8 +379,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 3,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1407),
-                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1408),
+                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6391),
+                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6392),
                             Name = "Fashion",
                             UpdatedBy = "System"
                         },
@@ -391,8 +388,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 4,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1410),
-                            DateUpdated = new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1411),
+                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6393),
+                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6394),
                             Name = "Health & Nutrition",
                             UpdatedBy = "System"
                         });
@@ -488,7 +485,7 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<int>("OrderQty")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -695,9 +692,7 @@ namespace SalesNGoods.Server.Migrations
 
                     b.HasOne("SalesNGoods.Shared.Domain.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Order");
 

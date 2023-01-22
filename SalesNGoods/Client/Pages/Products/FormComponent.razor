@@ -1,10 +1,6 @@
-﻿@page "/products/create/"
-@inject HttpClient _client
-@inject NavigationManager _navManager
-<h3 class="card-title">Create New Product</h3>
-<hr />
-<br />
-<EditForm Model="@product" OnValidSubmit="CreateProduct">
+﻿@inject HttpClient _client
+
+<EditForm Model="@product" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group">
@@ -51,10 +47,10 @@
                 {
                     foreach (var customer in Customers)
                     {
-                    <option value="@customer.Id">
-                    @customer.Name
-                    </option>}
-                    }
+                        <option value="@customer.Id">
+                            @customer.Name
+                        </option>}
+                }
             </InputSelect>
             <ValidationMessage For="@(() => product.CustomerId)" />
         </div>
@@ -68,35 +64,30 @@
                 {
                     foreach (var category in Categories)
                     {
-                    <option value="@category.Id">
-                    @category.Name
-                    </option>}
-                    }
+                        <option value="@category.Id">
+                            @category.Name
+                        </option>}
+                }
             </InputSelect>
             <ValidationMessage For="@(() => product.CategoryId)" />
         </div>
     </div>
     <button type="submit" class="btn btn-success btn-block">
-        Create Product
+        @ButtonText
     </button>
+    <BackToList Target="products" />
 </EditForm>
+@code {
+    [Parameter] public Product product { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
 
+    private IList<Customer> Customers;
+    private IList<Category> Categories;
 
-@code { Product product = new Product();
-
-            private IList<Customer> Customers;
-            private IList<Category> Categories;
-
-            protected async override Task OnInitializedAsync()
-            {
-                Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
-                Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
-
-            }
-
-
-            private async Task CreateProduct()
-            {
-                await _client.PostAsJsonAsync(Endpoints.ProductsEndpoint, product);
-                _navManager.NavigateTo("/products/");
-            } }
+    protected async override Task OnInitializedAsync()
+    {
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+        Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}"); ;
+    }
+}

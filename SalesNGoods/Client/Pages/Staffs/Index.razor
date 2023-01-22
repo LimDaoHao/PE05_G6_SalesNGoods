@@ -4,6 +4,11 @@
 @attribute [Authorize]
 
 <h3 class="card-title">Staff List</h3>
+<a href="/staffs/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Staff
+</a>
+<br />
 <br />
 
 @if (Staffs == null)
@@ -25,21 +30,21 @@ else
         <tbody>
             @foreach (var staff in Staffs)
             {
-            <tr>
-                <td>@staff.Name</td>
-                <td>@staff.Contact</td>
-                <td>@staff.Address</td>
-                <td>@staff.Email</td>
-                <td>
-                    <a href="/categories/edit/@staff.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(()=>Delete(staff.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
+                <tr>
+                    <td>@staff.Name</td>
+                    <td>@staff.Contact</td>
+                    <td>@staff.Address</td>
+                    <td>@staff.Email</td>
+                    <td>
+                        <a href="/staffs/edit/@staff.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(staff.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

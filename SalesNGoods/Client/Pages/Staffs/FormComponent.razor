@@ -1,0 +1,41 @@
+﻿<EditForm Model="@staff" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Name:</label>
+        <div>
+            <InputText @bind-Value="@staff.Name" class="form-control" />
+            <ValidationMessage For="@(() => staff.Name)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Contact:</label>
+        <div>
+            <InputNumber @bind-Value="@staff.Contact" class="form-control" />
+            <ValidationMessage For="@(() => staff.Contact)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <div>
+            <InputText @bind-Value="@staff.Email" class="form-control" />
+            <ValidationMessage For="@(() => staff.Email)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Address:</label>
+        <div>
+            <InputText @bind-Value="@staff.Address" class="form-control" />
+            <ValidationMessage For="@(() => staff.Address)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+    <BackToList Target="staffs" />
+</EditForm>
+@code {
+    [Parameter] public Staff staff { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

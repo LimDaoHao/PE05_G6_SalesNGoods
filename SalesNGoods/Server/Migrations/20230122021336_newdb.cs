@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SalesNGoods.Server.Migrations
 {
-    public partial class AddedDefaultDataAndUser : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,6 @@ namespace SalesNGoods.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -343,7 +342,7 @@ namespace SalesNGoods.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -363,18 +362,18 @@ namespace SalesNGoods.Server.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "Name", "Type", "UpdatedBy" },
+                columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "Name", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, "System", new DateTime(2023, 1, 20, 14, 13, 40, 464, DateTimeKind.Local).AddTicks(2412), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(867), "Electronics", null, "System" },
-                    { 2, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1402), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1406), "Beauty", null, "System" },
-                    { 3, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1407), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1408), "Fashion", null, "System" },
-                    { 4, "System", new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1410), new DateTime(2023, 1, 20, 14, 13, 40, 465, DateTimeKind.Local).AddTicks(1411), "Health & Nutrition", null, "System" }
+                    { 1, "System", new DateTime(2023, 1, 22, 10, 13, 36, 335, DateTimeKind.Local).AddTicks(7535), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(5357), "Electronics", "System" },
+                    { 2, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6385), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6389), "Beauty", "System" },
+                    { 3, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6391), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6392), "Fashion", "System" },
+                    { 4, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6393), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6394), "Health & Nutrition", "System" }
                 });
 
             migrationBuilder.CreateIndex(
