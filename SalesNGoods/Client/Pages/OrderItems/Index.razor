@@ -56,6 +56,7 @@ else
 
 @code {
     private List<OrderItem> OrderItems;
+    private List<Order> Orders;
     protected async override Task OnInitializedAsync()
     {
         OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
@@ -77,13 +78,14 @@ else
         Order orders = new Order();
         orders.OrderDate = DateTime.Now;
         await _client.PostAsJsonAsync(Endpoints.OrdersEndpoint, orders);
-
+        Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
+        var lastorder = Orders.ToList().Last();
         {
             foreach (var orderitem in OrderItems)
             {
                 @if (orderitem.OrderId == null)
                 {
-                    orderitem.OrderId = orders.Id;
+                    orderitem.OrderId = lastorder.Id;
                     await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{orderitem.Id}", orderitem);
                 }
             }
