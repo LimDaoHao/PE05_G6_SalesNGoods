@@ -43,9 +43,9 @@ namespace SalesNGoods.Server.Repository
         public IGenericRepository<Customer> Customers
             => _customers ??= new GenericRepository<Customer>(_context);
         public IGenericRepository<Staff> Staffs
-    => _staffs ??= new GenericRepository<Staff>(_context);
+             => _staffs ??= new GenericRepository<Staff>(_context);
         public IGenericRepository<Payment> Payments
-    => _payments ??= new GenericRepository<Payment>(_context);
+             => _payments ??= new GenericRepository<Payment>(_context);
 
         public void Dispose()
         {

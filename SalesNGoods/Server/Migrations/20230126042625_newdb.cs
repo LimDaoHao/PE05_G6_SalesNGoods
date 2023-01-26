@@ -105,6 +105,23 @@ namespace SalesNGoods.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -251,30 +268,6 @@ namespace SalesNGoods.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -285,7 +278,6 @@ namespace SalesNGoods.Server.Migrations
                     Stock = table.Column<int>(type: "int", nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -299,12 +291,6 @@ namespace SalesNGoods.Server.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -341,8 +327,8 @@ namespace SalesNGoods.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -356,13 +342,13 @@ namespace SalesNGoods.Server.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -370,10 +356,10 @@ namespace SalesNGoods.Server.Migrations
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "Name", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, "System", new DateTime(2023, 1, 22, 10, 13, 36, 335, DateTimeKind.Local).AddTicks(7535), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(5357), "Electronics", "System" },
-                    { 2, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6385), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6389), "Beauty", "System" },
-                    { 3, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6391), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6392), "Fashion", "System" },
-                    { 4, "System", new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6393), new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6394), "Health & Nutrition", "System" }
+                    { 1, "System", new DateTime(2023, 1, 26, 12, 26, 25, 420, DateTimeKind.Local).AddTicks(9298), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(6644), "Electronics", "System" },
+                    { 2, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7117), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7120), "Beauty", "System" },
+                    { 3, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7121), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7122), "Fashion", "System" },
+                    { 4, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7123), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7124), "Health & Nutrition", "System" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -437,11 +423,6 @@ namespace SalesNGoods.Server.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId",
-                table: "Orders",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId");
@@ -465,11 +446,6 @@ namespace SalesNGoods.Server.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CustomerId",
-                table: "Products",
-                column: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -488,6 +464,9 @@ namespace SalesNGoods.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "DeviceCodes");
@@ -518,9 +497,6 @@ namespace SalesNGoods.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
         }
     }
 }

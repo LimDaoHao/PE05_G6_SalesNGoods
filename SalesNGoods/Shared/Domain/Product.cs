@@ -13,8 +13,8 @@ namespace SalesNGoods.Shared.Domain
         public int Stock { get; set; }
         public string Brand { get; set; }
         public string Condition { get; set; }
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        //public int CustomerId { get; set; }
+        //public virtual Customer Customer { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
     }

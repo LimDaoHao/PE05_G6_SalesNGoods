@@ -10,7 +10,7 @@ using SalesNGoods.Server.Data;
 namespace SalesNGoods.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230122021336_newdb")]
+    [Migration("20230126042625_newdb")]
     partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -361,8 +361,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 335, DateTimeKind.Local).AddTicks(7535),
-                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(5357),
+                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 420, DateTimeKind.Local).AddTicks(9298),
+                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(6644),
                             Name = "Electronics",
                             UpdatedBy = "System"
                         },
@@ -370,8 +370,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6385),
-                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6389),
+                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7117),
+                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7120),
                             Name = "Beauty",
                             UpdatedBy = "System"
                         },
@@ -379,8 +379,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 3,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6391),
-                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6392),
+                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7121),
+                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7122),
                             Name = "Fashion",
                             UpdatedBy = "System"
                         },
@@ -388,8 +388,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 4,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6393),
-                            DateUpdated = new DateTime(2023, 1, 22, 10, 13, 36, 336, DateTimeKind.Local).AddTicks(6394),
+                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7123),
+                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7124),
                             Name = "Health & Nutrition",
                             UpdatedBy = "System"
                         });
@@ -441,9 +441,6 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -457,8 +454,6 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -479,13 +474,13 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderQty")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -554,9 +549,6 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -578,8 +570,6 @@ namespace SalesNGoods.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Products");
                 });
@@ -671,28 +661,17 @@ namespace SalesNGoods.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SalesNGoods.Shared.Domain.Order", b =>
-                {
-                    b.HasOne("SalesNGoods.Shared.Domain.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("SalesNGoods.Shared.Domain.OrderItem", b =>
                 {
                     b.HasOne("SalesNGoods.Shared.Domain.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("SalesNGoods.Shared.Domain.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -718,15 +697,7 @@ namespace SalesNGoods.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SalesNGoods.Shared.Domain.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Customer");
                 });
 #pragma warning restore 612, 618
         }

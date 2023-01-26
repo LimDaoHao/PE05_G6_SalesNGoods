@@ -13,64 +13,64 @@ namespace SalesNGoods.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class CustomersController : ControllerBase
     {
         //Refactored
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
         //Refactored
-        //public ProductsController(ApplicationDbContext context)
-        public ProductsController(IUnitOfWork unitOfWork)
+        //public CustomersController(ApplicationDbContext context)
+        public CustomersController(IUnitOfWork unitOfWork)
         {
            //Refactored
            // _context = context;
            _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Products
+        // GET: api/Customers
         [HttpGet]
        //Refactored
-       // public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-       public async Task<IActionResult> GetProducts()
+       // public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+       public async Task<IActionResult> GetCustomers()
         {
         //Refactored
-        //return await _context.Products.ToListAsync();
-        var products = await _unitOfWork.Products.GetAll(includes: q => q/*.Include(x => x.Customer)*/.Include(x => x.Category));
-        return Ok(products);
+        //return await _context.Customers.ToListAsync();
+        var customers = await _unitOfWork.Customers.GetAll();
+        return Ok(customers);
         }
 
-        // GET: api/Products/5
+        // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(int id)
+        public async Task<IActionResult> GetCustomer(int id)
         {
             //Refactored
-            //var product = await _context.Products.FindAsync(id);
-            var product = await _unitOfWork.Products.Get(q => q.Id == id);
+            //var customer = await _context.Customers.FindAsync(id);
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
 
-            if (product == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
             //Refactored
-            //return product;
-            return Ok(product); 
+            //return customer;
+            return Ok(customer); 
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != product.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
             //Refactored
-            //_context.Entry(product).State = EntityState.Modified;
-            _unitOfWork.Products.Update(product);
+            //_context.Entry(customer).State = EntityState.Modified;
+            _unitOfWork.Customers.Update(customer);
 
             try
             {
@@ -81,8 +81,8 @@ namespace SalesNGoods.Server.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 //Refactored
-                //if (!ProductExists(id))
-                if (!await ProductExists(id))
+                //if (!CustomerExists(id))
+                if (!await CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -95,49 +95,49 @@ namespace SalesNGoods.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
             //Refactored
-            //_context.Products.Add(product);
+            //_context.Customers.Add(customer);
             //await _context.SaveChangesAsync();
-            await _unitOfWork.Products.Insert(product);
+            await _unitOfWork.Customers.Insert(customer);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Customers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
             //Refactored
-            //var product = await _context.Products.FindAsync(id);
-            var product = await _unitOfWork.Products.Get(q => q.Id == id);
-            if (product == null)
+            //var customer = await _context.Customers.FindAsync(id);
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
             //Refactored
-            //_context.Products.Remove(product);
+            //_context.Customers.Remove(customer);
             //await _context.SaveChangesAsync();
-            await _unitOfWork.Products.Delete(id);
+            await _unitOfWork.Customers.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
         //Refactored    
-        //private bool ProductExists(int id)
-        private async Task<bool> ProductExists(int id)
+        //private bool CustomerExists(int id)
+        private async Task<bool> CustomerExists(int id)
         {
             //Refactored
-            //return _context.Products.Any(e => e.Id == id);
-            var product = await _unitOfWork.Products.Get(q => q.Id == id);
-            return product != null;
+            //return _context.Customers.Any(e => e.Id == id);
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
+            return customer != null;
         }
     }
 }

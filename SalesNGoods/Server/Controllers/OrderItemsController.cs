@@ -36,7 +36,7 @@ namespace SalesNGoods.Server.Controllers
         {
             //Refactored
             //return await _context.OrderItems.ToListAsync();
-            var orderitems = await _unitOfWork.OrderItems.GetAll();
+            var orderitems = await _unitOfWork.OrderItems.GetAll(includes: q => q.Include(x => x.Product).Include(x => x.Order));
             return Ok(orderitems);
         }
 
@@ -139,5 +139,6 @@ namespace SalesNGoods.Server.Controllers
             var orderitem = await _unitOfWork.OrderItems.Get(q => q.Id == id);
             return orderitem != null;
         }
+
     }
 }

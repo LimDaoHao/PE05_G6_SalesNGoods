@@ -41,6 +41,9 @@ else
                         <a href="/view/@product.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
+                        <button class="btn btn-dark" @onclick="@(()=>AddCart(product.Id))">
+                            <span class="oi oi-cart"></span>
+                        </button>
                     </td>
                 </tr>
             }
@@ -54,6 +57,19 @@ else
     protected async override Task OnInitializedAsync()
     {
         Products = await _client.GetFromJsonAsync<List<Product>>($"{Endpoints.ProductsEndpoint}");
+    }
+    async Task AddCart(int ProductId)
+    {
+        var product = Products.First(q => q.Id == ProductId);
+
+        OrderItem orderitem = new OrderItem();
+        orderitem.OrderQty = 1;
+        orderitem.ProductId = product.Id;
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to add {product.Name} to cart?");
+        if (confirm)
+        {
+            await _client.PostAsJsonAsync(Endpoints.OrderItemsEndpoint, orderitem);
+        }
     }
 
 

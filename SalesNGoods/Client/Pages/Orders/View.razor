@@ -1,0 +1,49 @@
+﻿@page "/orders/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Product List</h3>
+<br />
+
+@if (OrderItems == null)
+{
+<div class="alert alert-info">Loading Products...</div>
+}
+else
+{
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Qty</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderitem in OrderItems)
+        {
+            if (orderitem.OrderId == id)
+            {
+        <tr>
+            <th>@orderitem.Product.Name</th>
+            <th>@orderitem.Product.Brand</th>
+            <th>@orderitem.OrderQty</th>
+        </tr>
+            }
+        }
+    </tbody>
+</table>
+}
+
+
+
+
+
+@code {
+    [Parameter] public int id { get; set; }
+    private List<OrderItem> OrderItems;
+    protected async override Task OnInitializedAsync()
+    {
+        OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
+    }
+}

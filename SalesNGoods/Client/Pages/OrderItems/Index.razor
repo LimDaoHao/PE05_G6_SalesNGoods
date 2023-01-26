@@ -4,6 +4,9 @@
 @attribute [Authorize]
 
 <h3 class="card-title">Cart</h3>
+<button class="btn btn-dark" @onclick="@(() => CheckOut())">
+    <span class="oi oi-cart">Check Out</span>
+</button>
 <br />
 
 @if (OrderItems == null)
@@ -17,28 +20,32 @@ else
             <tr>
                 <th>Name</th>
                 <th>Brand</th>
-                <th>Category</th>
+                @*<th>Category</th>*@
                 <th>Condition</th>
-                <th>Stock</th>
+                <th>Quantity</th>
                 <th>Remove</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var orderitem in OrderItems)
             {
+
+                @if (orderitem.OrderId == null)
+                {
             <tr>
                 <td>@orderitem.Product.Name</td>
                 <td>@orderitem.Product.Brand</td>
-                <td>@orderitem.Product.Category.Name</td>
+                @*<td>@orderitem.Product.Category.Name</td>*@
                 <td>@orderitem.Product.Condition</td>
-                <td>@orderitem.Product.Stock</td>
+                <td>@orderitem.OrderQty</td>
                 <td>
-                    <button class="btn btn-danger" @onclick="@(()=>Delete(orderitem.Id))">
+                    <button class="btn btn-danger" @onclick="@(() => Delete(orderitem.Id))">
                         <span class="oi oi-delete"></span>
                     </button>
                 </td>
             </tr>
-            }
+                    }
+                }
         </tbody>
     </table>
 }
@@ -49,7 +56,6 @@ else
 
 @code {
     private List<OrderItem> OrderItems;
-
     protected async override Task OnInitializedAsync()
     {
         OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
@@ -65,4 +71,22 @@ else
             await OnInitializedAsync();
         }
     }
-}
+
+    private async Task CheckOut()
+    {
+        Order orders = new Order();
+        orders.OrderDate = DateTime.Now;
+        await _client.PostAsJsonAsync(Endpoints.OrdersEndpoint, orders);
+
+        {
+            foreach (var orderitem in OrderItems)
+            {
+                @if (orderitem.OrderId == null)
+                {
+                    orderitem.OrderId = orders.Id;
+                    await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{orderitem.Id}", orderitem);
+                }
+            }
+        }
+    }
+    }
