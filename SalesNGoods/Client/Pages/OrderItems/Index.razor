@@ -1,6 +1,7 @@
 ﻿@page "/cart/"
 @inject HttpClient _client
 @inject IJSRuntime js
+@inject NavigationManager _navManager
 @attribute [Authorize]
 
 <h3 class="card-title">Cart</h3>
@@ -32,23 +33,23 @@ else
 
                 @if (orderitem.OrderId == null)
                 {
-            <tr>
-                <td>@orderitem.Product.Name</td>
-                <td>@orderitem.Product.Brand</td>
-                @*<td>@orderitem.Product.Category.Name</td>*@
-                <td>@orderitem.Product.Condition</td>
-                <td>@orderitem.OrderQty</td>
-                <td>
-                    <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() => Delete(orderitem.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
-                    }
+                    <tr>
+                        <td>@orderitem.Product.Name</td>
+                        <td>@orderitem.Product.Brand</td>
+                        @*<td>@orderitem.Product.Category.Name</td>*@
+                        <td>@orderitem.Product.Condition</td>
+                        <td>@orderitem.OrderQty</td>
+                        <td>
+                            <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(() => Delete(orderitem.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
                 }
+            }
         </tbody>
     </table>
 }
@@ -93,15 +94,16 @@ else
                     orderitem.OrderId = lastorder.Id;
                     await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{orderitem.Id}", orderitem);
                     foreach (var product in Products)
-                        {
+                    {
                         @if (product.Id == orderitem.ProductId)
-                            {
+                        {
                             product.Stock = product.Stock - orderitem.OrderQty;
                             await _client.PutAsJsonAsync($"{Endpoints.ProductsEndpoint}/{product.Id}", product);
-                            }
                         }
                     }
                 }
+            }
         }
+        _navManager.NavigateTo("/payments/create/" + @lastorder.Id );
     }
-    }
+}
