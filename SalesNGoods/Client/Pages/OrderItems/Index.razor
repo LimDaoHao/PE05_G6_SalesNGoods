@@ -39,6 +39,9 @@ else
                 <td>@orderitem.Product.Condition</td>
                 <td>@orderitem.OrderQty</td>
                 <td>
+                    <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
                     <button class="btn btn-danger" @onclick="@(() => Delete(orderitem.Id))">
                         <span class="oi oi-delete"></span>
                     </button>
@@ -57,9 +60,11 @@ else
 @code {
     private List<OrderItem> OrderItems;
     private List<Order> Orders;
+    private List<Product> Products;
     protected async override Task OnInitializedAsync()
     {
         OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
+        Products = await _client.GetFromJsonAsync<List<Product>>($"{Endpoints.ProductsEndpoint}");
     }
 
     async Task Delete(int OrderItemId)
@@ -87,8 +92,16 @@ else
                 {
                     orderitem.OrderId = lastorder.Id;
                     await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{orderitem.Id}", orderitem);
+                    foreach (var product in Products)
+                        {
+                        @if (product.Id == orderitem.ProductId)
+                            {
+                            product.Stock = product.Stock - orderitem.OrderQty;
+                            await _client.PutAsJsonAsync($"{Endpoints.ProductsEndpoint}/{product.Id}", product);
+                            }
+                        }
+                    }
                 }
-            }
         }
     }
     }

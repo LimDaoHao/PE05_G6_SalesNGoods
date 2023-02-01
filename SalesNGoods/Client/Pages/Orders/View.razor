@@ -1,5 +1,6 @@
 ﻿@page "/orders/view/{id:int}"
 @inject HttpClient _client
+@inject IJSRuntime js
 @inject NavigationManager _navManager
 
 <h3 class="card-title">Product List</h3>
@@ -7,32 +8,41 @@
 
 @if (OrderItems == null)
 {
-<div class="alert alert-info">Loading Products...</div>
+    <div class="alert alert-info">Loading Products...</div>
 }
 else
 {
-<table class="table table-responsive">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Qty</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var orderitem in OrderItems)
-        {
-            if (orderitem.OrderId == id)
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orderitem in OrderItems)
             {
-        <tr>
-            <th>@orderitem.Product.Name</th>
-            <th>@orderitem.Product.Brand</th>
-            <th>@orderitem.OrderQty</th>
-        </tr>
+                if (orderitem.OrderId == id)
+                {
+                    <tr>
+                        <th>@orderitem.Product.Name</th>
+                        <th>@orderitem.Product.Brand</th>
+                        <th>@orderitem.OrderQty</th>
+                        <td>
+                            <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(()=>Delete(orderitem.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 }
 
 
@@ -46,4 +56,15 @@ else
     {
         OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
     }
+    async Task Delete(int orderitemId)
+    {
+        var orderitem = OrderItems.First(q => q.Id == orderitemId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {orderitem.Product.Name}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.OrderItemsEndpoint}/{orderitemId}");
+            await OnInitializedAsync();
+        }
+    }
+
 }
