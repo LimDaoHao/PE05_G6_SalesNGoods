@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Staff List</h3>
 <a href="/staffs/create" class="btn btn-secondary">
@@ -17,7 +18,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="staffsTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -36,6 +37,9 @@ else
                     <td>@staff.Address</td>
                     <td>@staff.Email</td>
                     <td>
+                        <a href="/staffs/view/@staff.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
                         <a href="/staffs/edit/@staff.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
@@ -68,8 +72,16 @@ else
         var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {Staff.Name}");
         if (confirm)
         {
-            await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/{StaffId}");
+            await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{StaffId}");
             await OnInitializedAsync();
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#staffsTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#staffsTable");
     }
 }

@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Products</h3>
 <a href="/products/create" class="btn btn-secondary">
@@ -17,7 +18,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="productsTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -38,11 +39,14 @@ else
                     <td>@product.Condition</td>
                     <td>@product.Stock</td>
                     <td>
-                        <a href="/view/@product.Id" class="btn btn-primary">
+                        <a href="/products/view/@product.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
                         <button class="btn btn-dark" @onclick="@(()=>AddCart(product.Id))">
                             <span class="oi oi-cart"></span>
+                        </button>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(product.Id))">
+                            <span class="oi oi-delete"></span>
                         </button>
                     </td>
                 </tr>
@@ -71,7 +75,23 @@ else
             await _client.PostAsJsonAsync(Endpoints.OrderItemsEndpoint, orderitem);
         }
     }
-
-
+    async Task Delete(int ProductId)
+    {
+        var product = Products.First(q => q.Id == ProductId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {product.Name}");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.ProductsEndpoint}/{ProductId}");
+            await OnInitializedAsync();
+        }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#productsTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#productsTable");
+    }
 
 }

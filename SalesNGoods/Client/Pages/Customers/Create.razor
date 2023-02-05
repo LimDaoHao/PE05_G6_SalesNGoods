@@ -17,7 +17,7 @@
     <div class="form-group">
         <label>Contact:</label>
         <div>
-            <InputNumber @bind-Value="@customer.Contact" class="form-control" />
+            <InputText @bind-Value="@customer.Contact" class="form-control" />
             <ValidationMessage For="@(() => customer.Contact)" />
         </div>
     </div>

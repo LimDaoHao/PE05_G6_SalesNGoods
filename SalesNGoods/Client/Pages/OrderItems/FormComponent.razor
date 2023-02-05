@@ -1,19 +1,33 @@
 ﻿<EditForm Model="@orderitem" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <div class="form-group">
-        <label>Name:</label>
-        <div>
-            <InputNumber @bind-Value="@orderitem.OrderQty" class="form-control" />
-            <ValidationMessage For="@(() => orderitem.OrderQty)" />
+    @*<fieldset disabled>
+        <div class="form-group">
+            <label>Name:</label>
+            <div>
+                <InputText @bind-Value="@orderitem.Product.Name" class="form-control" />
+            </div>
         </div>
-    </div>
-    <button type="submit" class="btn btn-success btn-block">
-        @ButtonText
-    </button>
+    </fieldset>*@
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Quantity:</label>
+            <div>
+                <InputNumber @bind-Value="@orderitem.OrderQty" class="form-control" />
+                <ValidationMessage For="@(() => orderitem.OrderQty)" />
+            </div>
+        </div>
+    </fieldset>
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+    }
     <BackToList Target="cart" />
 </EditForm>
     @code {
+        [Parameter] public bool Disabled { get; set; } = false;
         [Parameter] public OrderItem orderitem { get; set; }
         [Parameter] public string ButtonText { get; set; } = "Save";
         [Parameter] public EventCallback OnValidSubmit { get; set; }

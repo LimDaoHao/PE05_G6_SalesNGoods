@@ -1,6 +1,5 @@
 ﻿@page "/orders/"
 @inject HttpClient _client
-@using SalesNGoods.Client.Services
 @inject IJSRuntime js
 @inject HttpInterceptorService _interceptor
 @implements IDisposable
@@ -16,7 +15,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="ordersTable">
         <thead>
             <tr>
                 <th>Order No.</th>
@@ -53,9 +52,22 @@ else
         _interceptor.MonitorEvent();
         Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
     }
-
+    async Task Delete(int OrderId)
+    {
+        var order = Orders.First(q => q.Id == OrderId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {order.Id}");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.OrdersEndpoint}/{OrderId}");
+            await OnInitializedAsync();
+        }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#ordersTable");
+    }
     public void Dispose()
-    { 
-        _interceptor.DisposeEvent();
-     }
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#ordersTable");
+    }
 }

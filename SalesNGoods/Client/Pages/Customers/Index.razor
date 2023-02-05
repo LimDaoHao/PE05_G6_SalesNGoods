@@ -1,7 +1,8 @@
-﻿@page "/customer/"
+﻿@page "/customers/"
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Customers</h3>
 <a href="/customers/create" class="btn btn-secondary">
@@ -18,7 +19,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="customersTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -69,5 +70,13 @@ else
             await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{CustomerId}");
             await OnInitializedAsync();
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#customersTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#customersTable");
     }
 }

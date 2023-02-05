@@ -3,6 +3,7 @@
 @inject IJSRuntime js
 @inject NavigationManager _navManager
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Cart</h3>
 <button class="btn btn-dark" @onclick="@(() => CheckOut())">
@@ -16,7 +17,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="orderitemsTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -40,6 +41,9 @@ else
                         <td>@orderitem.Product.Condition</td>
                         <td>@orderitem.OrderQty</td>
                         <td>
+                            <a href="/products/view/@orderitem.ProductId" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                            </a>
                             <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">
                                 <span class="oi oi-pencil"></span>
                             </a>
@@ -105,5 +109,13 @@ else
             }
         }
         _navManager.NavigateTo("/payments/create/" + @lastorder.Id );
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#orderitemsTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#orderitemsTable");
     }
 }

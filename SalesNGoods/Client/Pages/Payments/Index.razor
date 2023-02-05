@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Payment List</h3>
 <a href="/payments/create" class="btn btn-secondary">
@@ -17,7 +18,7 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="paymentsTable">
         <thead>
             <tr>
                 <th>Method</th>
@@ -34,7 +35,10 @@ else
                     <td>@payment.DateTime</td>
                     <td>@payment.OrderId</td>
                     <td>
-                        <a href="/categories/edit/@payment.Id" class="btn btn-warning">
+                        <a href="/payments/view/@payment.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/payments/edit/@payment.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(payment.Id))">
@@ -69,5 +73,13 @@ else
             await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{PaymentId}");
             await OnInitializedAsync();
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#paymentsTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#paymentsTable");
     }
 }

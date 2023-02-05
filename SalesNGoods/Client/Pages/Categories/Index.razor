@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">Category List</h3>
 <a href="/categories/create" class="btn btn-secondary">
@@ -16,7 +17,7 @@
 <div class="alert alert-info">Loading Categories...</div> }
             else
             {
-<table class="table table-responsive">
+<table class="table table-responsive" id="categoriesTable">
     <thead>
         <tr>
             <th>Name</th>
@@ -29,6 +30,9 @@
 <tr>
     <td>@category.Name</td>
     <td>
+        <a href="/categories/view/@category.Id" class="btn btn-primary">
+            <span class="oi oi-book"></span>
+        </a>
         <a href="/categories/edit/@category.Id" class="btn btn-warning">
             <span class="oi oi-pencil"></span>
         </a>
@@ -47,18 +51,27 @@
 
 @code { private List<Category> Categories;
 
-            protected async override Task OnInitializedAsync()
-            {
-                Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
-            }
+    protected async override Task OnInitializedAsync()
+    {
+        Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
+    }
 
-            async Task Delete(int CategoryId)
-            {
-                var category = Categories.First(q => q.Id == CategoryId);
-                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {category.Name}");
-                if (confirm)
-                {
-                    await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/{CategoryId}");
-                    await OnInitializedAsync();
-                }
-            } }
+    async Task Delete(int CategoryId)
+    {
+        var category = Categories.First(q => q.Id == CategoryId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {category.Name}");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/{CategoryId}");
+            await OnInitializedAsync();
+        }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#categoriesTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#categoriesTable");
+    }
+    }
