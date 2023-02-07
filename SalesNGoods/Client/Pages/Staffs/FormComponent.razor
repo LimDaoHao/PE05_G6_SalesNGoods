@@ -12,7 +12,7 @@
     <div class="form-group">
         <label>Contact:</label>
         <div>
-            <InputNumber @bind-Value="@staff.Contact" class="form-control" />
+            <InputText @bind-Value="@staff.Contact" class="form-control" />
             <ValidationMessage For="@(() => staff.Contact)" />
         </div>
     </div>

@@ -22,10 +22,10 @@ else
             <tr>
                 <th>Name</th>
                 <th>Brand</th>
-                @*<th>Category</th>*@
                 <th>Condition</th>
+                <th>Price</th>
                 <th>Quantity</th>
-                <th>Remove</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -37,11 +37,11 @@ else
                     <tr>
                         <td>@orderitem.Product.Name</td>
                         <td>@orderitem.Product.Brand</td>
-                        @*<td>@orderitem.Product.Category.Name</td>*@
                         <td>@orderitem.Product.Condition</td>
+                        <td>$@orderitem.Product.Price</td>
                         <td>@orderitem.OrderQty</td>
                         <td>
-                            <a href="/products/view/@orderitem.ProductId" class="btn btn-primary">
+                            <a href="/cart/view/@orderitem.Id" class="btn btn-primary">
                                 <span class="oi oi-book"></span>
                             </a>
                             <a href="/cart/edit/@orderitem.Id" class="btn btn-warning">

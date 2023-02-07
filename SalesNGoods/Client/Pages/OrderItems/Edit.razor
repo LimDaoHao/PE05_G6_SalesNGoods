@@ -1,7 +1,9 @@
 ﻿@page "/cart/edit/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
-<h3 class="card-title">Edit Customer</h3>
+@inject IJSRuntime js
+
+<h3 class="card-title">Edit Quantity</h3>
 
 <FormComponent ButtonText="Update" OnValidSubmit="EditOrderItem" orderitem="orderitem" />
 
@@ -9,13 +11,27 @@
     [Parameter] public int id { get; set; }
     OrderItem orderitem = new OrderItem();
 
+    private IList<Product> Products;
+
     protected async override Task OnParametersSetAsync()
     {
         orderitem = await _client.GetFromJsonAsync<OrderItem>($"{Endpoints.OrderItemsEndpoint}/{id}");
+        Products = await _client.GetFromJsonAsync<List<Product>>($"{Endpoints.ProductsEndpoint}");
     }
     async Task EditOrderItem()
     {
-        await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{id}", orderitem);
-        _navManager.NavigateTo("/cart/");
+        @foreach (var product in Products)
+            @if (product.Id == orderitem.ProductId)
+            {
+                @if (product.Stock >= orderitem.OrderQty)
+                {
+                    await _client.PutAsJsonAsync($"{Endpoints.OrderItemsEndpoint}/{id}", orderitem);
+                    _navManager.NavigateTo("/cart/");
+                }
+                else
+                {
+                    await js.InvokeVoidAsync("alert", "Quantity cannot be greater than stock!");
+                }
+             }
     }
 }

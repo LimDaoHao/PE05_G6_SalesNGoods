@@ -42,6 +42,9 @@ else
                         <a href="/products/view/@product.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
+                        <a href="/products/edit/@product.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
                         <button class="btn btn-dark" @onclick="@(()=>AddCart(product.Id))">
                             <span class="oi oi-cart"></span>
                         </button>
@@ -67,12 +70,20 @@ else
         var product = Products.First(q => q.Id == ProductId);
 
         OrderItem orderitem = new OrderItem();
-        orderitem.OrderQty = 1;
+        string qty = await js.InvokeAsync<string>("prompt", "Enter Quantity:");
         orderitem.ProductId = product.Id;
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to add {product.Name} to cart?");
-        if (confirm)
+        orderitem.OrderQty = int.Parse(qty);
+        @if (product.Stock >= orderitem.OrderQty)
         {
-            await _client.PostAsJsonAsync(Endpoints.OrderItemsEndpoint, orderitem);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to add {product.Name} to cart?");
+            if (confirm)
+            {
+                await _client.PostAsJsonAsync(Endpoints.OrderItemsEndpoint, orderitem);
+            }
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Quantity cannot be greater than stock!");
         }
     }
     async Task Delete(int ProductId)

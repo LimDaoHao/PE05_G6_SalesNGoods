@@ -17,6 +17,6 @@
     async Task EditPayment()
     {
     await _client.PutAsJsonAsync($"{Endpoints.PaymentsEndpoint}/{id}", payment);
-    _navManager.NavigateTo("/payments/");
+    _navManager.NavigateTo("/orders/");
     }
     }

@@ -54,7 +54,7 @@ namespace SalesNGoods.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -71,9 +71,9 @@ namespace SalesNGoods.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contact = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contact = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -147,10 +147,10 @@ namespace SalesNGoods.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contact = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contact = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -273,11 +273,11 @@ namespace SalesNGoods.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -301,7 +301,7 @@ namespace SalesNGoods.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Method = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -356,10 +356,10 @@ namespace SalesNGoods.Server.Migrations
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "Name", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, "System", new DateTime(2023, 1, 26, 12, 26, 25, 420, DateTimeKind.Local).AddTicks(9298), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(6644), "Electronics", "System" },
-                    { 2, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7117), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7120), "Beauty", "System" },
-                    { 3, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7121), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7122), "Fashion", "System" },
-                    { 4, "System", new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7123), new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7124), "Health & Nutrition", "System" }
+                    { 1, "System", new DateTime(2023, 2, 7, 12, 53, 41, 393, DateTimeKind.Local).AddTicks(9056), new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(7805), "Electronics", "System" },
+                    { 2, "System", new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8431), new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8434), "Beauty", "System" },
+                    { 3, "System", new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8436), new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8437), "Fashion", "System" },
+                    { 4, "System", new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8438), new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8439), "Health & Nutrition", "System" }
                 });
 
             migrationBuilder.CreateIndex(

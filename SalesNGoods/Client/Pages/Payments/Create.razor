@@ -55,5 +55,5 @@
         payment.OrderId = id;
         payment.DateTime = DateTime.Now;
         await _client.PostAsJsonAsync(Endpoints.PaymentsEndpoint, payment);
-        _navManager.NavigateTo("/payments/");
+        _navManager.NavigateTo("/orders/");
     } }

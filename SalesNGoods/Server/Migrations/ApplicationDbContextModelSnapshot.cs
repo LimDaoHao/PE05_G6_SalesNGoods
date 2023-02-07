@@ -345,6 +345,7 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -359,8 +360,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 420, DateTimeKind.Local).AddTicks(9298),
-                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(6644),
+                            DateCreated = new DateTime(2023, 2, 7, 12, 53, 41, 393, DateTimeKind.Local).AddTicks(9056),
+                            DateUpdated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(7805),
                             Name = "Electronics",
                             UpdatedBy = "System"
                         },
@@ -368,8 +369,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7117),
-                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7120),
+                            DateCreated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8431),
+                            DateUpdated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8434),
                             Name = "Beauty",
                             UpdatedBy = "System"
                         },
@@ -377,8 +378,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 3,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7121),
-                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7122),
+                            DateCreated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8436),
+                            DateUpdated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8437),
                             Name = "Fashion",
                             UpdatedBy = "System"
                         },
@@ -386,8 +387,8 @@ namespace SalesNGoods.Server.Migrations
                         {
                             Id = 4,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7123),
-                            DateUpdated = new DateTime(2023, 1, 26, 12, 26, 25, 421, DateTimeKind.Local).AddTicks(7124),
+                            DateCreated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8438),
+                            DateUpdated = new DateTime(2023, 2, 7, 12, 53, 41, 394, DateTimeKind.Local).AddTicks(8439),
                             Name = "Health & Nutrition",
                             UpdatedBy = "System"
                         });
@@ -404,6 +405,7 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contact")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -416,9 +418,11 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -513,6 +517,7 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Method")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
@@ -536,12 +541,14 @@ namespace SalesNGoods.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Brand")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Condition")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -554,6 +561,7 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -582,8 +590,9 @@ namespace SalesNGoods.Server.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Contact")
-                        .HasColumnType("int");
+                    b.Property<string>("Contact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -595,9 +604,11 @@ namespace SalesNGoods.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")

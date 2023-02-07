@@ -20,23 +20,38 @@ else
             <tr>
                 <th>Order No.</th>
                 <th>Order Date</th>
+                <th>Payment Mthd</th>
                 <th>View Order</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Orders)
             {
-                <tr>
-                    <th>@order.Id</th>
-                    <th>@order.OrderDate</th>
-                    <th>
-                        <a href="/orders/view/@order.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                    </th>
-                </tr>
-            }
-        </tbody>
+                @foreach (var payment in Payments)
+                {
+                    @if (payment.OrderId == order.Id)
+                    {
+
+                        <tr>
+                            <th>@order.Id</th>
+                            <th>@order.OrderDate</th>
+                            <th>@payment.Method</th>
+                            <th>
+                                <a href="/orders/view/@order.Id" class="btn btn-primary">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <a href="/payments/edit/@payment.Id" class="btn btn-warning">
+                                    <span class="oi oi-pencil"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() => Delete(order.Id))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </th>
+                        </tr>
+                        }
+                    }
+                }
+            </tbody>
     </table>
 }
 
@@ -46,11 +61,14 @@ else
 
 @code {
     private List<Order> Orders;
-
+    private List<OrderItem> OrderItems;
+    private List<Payment> Payments;
     protected async override Task OnInitializedAsync()
     {
         _interceptor.MonitorEvent();
         Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
+        OrderItems = await _client.GetFromJsonAsync<List<OrderItem>>($"{Endpoints.OrderItemsEndpoint}");
+        Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
     async Task Delete(int OrderId)
     {
@@ -58,6 +76,17 @@ else
         var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {order.Id}");
         if (confirm)
         {
+            @foreach (var orderitem in OrderItems)
+            {
+                var orderitems = OrderItems.First(q => q.OrderId == OrderId);
+                await _client.DeleteAsync($"{Endpoints.OrderItemsEndpoint}/{orderitems.Id}");
+
+            }
+            @foreach (var payment in Payments)
+            {
+                var payments = Payments.First(q => q.OrderId == OrderId);
+                await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{payments.Id}");
+            }
             await _client.DeleteAsync($"{Endpoints.OrdersEndpoint}/{OrderId}");
             await OnInitializedAsync();
         }
