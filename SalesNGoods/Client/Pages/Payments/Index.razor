@@ -5,10 +5,6 @@
 @implements IDisposable
 
 <h3 class="card-title">Payment List</h3>
-<a href="/payments/create" class="btn btn-secondary">
-    <span class="oi oi-plus"></span>
-     Create New Payment
-</a>
 <br />
 <br />
 
@@ -41,9 +37,9 @@ else
                         <a href="/payments/edit/@payment.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(payment.Id))">
+                        @*<button class="btn btn-danger" @onclick="@(()=>Delete(payment.Id))">
                             <span class="oi oi-delete"></span>
-                        </button>
+                        </button>*@
 
                     </td>
                 </tr>
@@ -64,16 +60,16 @@ else
         Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
 
-    async Task Delete(int PaymentId)
-    {
-        var payment = Payments.First(q => q.Id == PaymentId);
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {payment.Method}");
-        if (confirm)
-        {
-            await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{PaymentId}");
-            await OnInitializedAsync();
-        }
-    }
+    //async Task Delete(int PaymentId)
+    //{
+    //    var payment = Payments.First(q => q.Id == PaymentId);
+    //    var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {payment.Method}");
+    //    if (confirm)
+    //    {
+    //        await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{PaymentId}");
+    //        await OnInitializedAsync();
+    //    }
+    //}
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         await js.InvokeVoidAsync("AddDataTable", "#paymentsTable");
